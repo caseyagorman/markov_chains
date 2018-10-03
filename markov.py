@@ -51,7 +51,6 @@ def make_chains(text_string, n_grams):
         else:
             chains[key].append(value)
         counter += 1
-    print(chains)
 
 
 
@@ -72,35 +71,39 @@ def make_chains(text_string, n_grams):
     # print (chains)
     return chains
 
-# def make_text(chains):
-#     key = choice(chains.keys())
-#     # start with a random key from the dictionary of chains
-#     word_list = [key[0], key[1]]
-#     # inilize list of words to be added to
-#     word_value = choice(chains[key])
-#     # word value is a random word in the list of values for our chains key
-#
-#     while word_value is not None:
-#         # keep going until you get a value of None, which is with Sam I am
-#         key = (key[1], word_value)
-#         # make the new key the second word in the original key and the random choice of a value from the list of values of the original key
-#         word_list.append(word_value)
-#         # reassign word value to be a new value in the new key's list of values so we keep it going
-#         word_value = choice(chains[key])
-#
-#     return " ".join(word_list)
-#
+def make_text(chains, n_grams):
+    key = choice(chains.keys())
+    # start with a random key from the dictionary of chains
+    word_list = list(key)
+    # inilize list of words to be added to
+    word_value = choice(chains[key])
+    # word value is a random word in the list of values for our chains key
+
+    while word_value is not None:
+        print(key)
+        # keep going until you get a value of None, which is with Sam I am
+        key = (key[1::])
+        key = list(key)
+        key.append(word_value)
+        key = tuple(key)
+        print(key)
+        # make the new key the second word in the original key and the random choice of a value from the list of values of the original key
+        word_list.append(word_value)
+        # reassign word value to be a new value in the new key's list of values so we keep it going
+        word_value = choice(chains[key])
+
+    return " ".join(word_list)
+
 
 
 input_path = "green-eggs.txt"
 n_grams = 4
-
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
 chains = make_chains(input_text, n_grams)
 # Produce random text
-# random_text = make_text(chains, n_grams)
-#
+random_text = make_text(chains, n_grams)
+
 # print(random_text)
