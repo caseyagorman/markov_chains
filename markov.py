@@ -40,13 +40,19 @@ def make_chains(text_string, n_grams):
     counter = 0
     while counter < (len(split_string) - n_grams):
         key = []
+        value = []
         for n in range(n_grams):
             new_count = (counter) + n
             (key.append(split_string[new_count]))
         key = tuple(key)
-        chains[key] = "fake"
+        value = split_string[new_count + 1]
+        if key not in chains:
+            chains[key] = [value]
+        else:
+            chains[key].append(value)
         counter += 1
     print(chains)
+
 
 
 
