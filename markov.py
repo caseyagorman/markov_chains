@@ -38,20 +38,16 @@ def make_chains(text_string, n_grams):
     split_string = text_string.split()
     split_string.append(None)
     counter = 0
-    while counter < (len(split_string)):
-        print(counter)
-        key = [split_string[counter]]
-        print(key)
-        while key_count < n_grams:
-            (key.append(split_string[counter]))
-            key_count += 1
-            print("print list of keys plus 1 inside loop", key, key_count)
-            if key_count == n_grams:
-                break
+    while counter < (len(split_string) - n_grams):
+        key = []
+        for n in range(n_grams):
+            new_count = (counter) + n
+            (key.append(split_string[new_count]))
+        key = tuple(key)
+        chains[key] = "fake"
         counter += 1
-        print("print key, plus 1 outside loop", key, counter)
-        # key = tuple(key)
-        # chains[key] = "fake"
+    print(chains)
+
 
 
 
