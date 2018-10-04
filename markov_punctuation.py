@@ -2,6 +2,7 @@
 
 from random import choice
 import random
+import re
 
 def open_and_read_file(file_path):
     """Take file path as string; return text as string.
@@ -14,7 +15,7 @@ def open_and_read_file(file_path):
     return open(file_path).read()
 
 
-def make_chains(text_string, n_grams):
+def make_chains(text_string):
     """Take input text as string; return dictionary of Markov chains.
     A chain will be a key that consists of a tuple of (word1, word2)
     and the value would be a list of the word(s) that follow those two
@@ -32,56 +33,23 @@ def make_chains(text_string, n_grams):
     """
 
     chains = {}
-
-    # your code goes here
-
-    split_string = text_string.split()
-    split_string.append(None)
     counter = 0
+    # your code goes here
+    key =[]
+    text_list = re.findall(r"[\w']+|[.,!?;]", text_string)
+    for word in text_list:
+        key.append(word)
+        if word == "." or word == "!" or word == "?":
+            break
+    key = " ".join(key)
 
-    while counter < (len(split_string) - n_grams):
-        key = []
-        value = []
+    print(key)
 
-        for n in range(n_grams):
-            new_count = (counter) + n
-            (key.append(split_string[new_count]))
-        key = tuple(key)
-        value = split_string[new_count + 1]
-        if key not in chains:
-            chains[key] = [value]
-        else:
-            chains[key].append(value)
-        counter += 1
+
+            # counter += 1
     # print(chains)
     return chains
 
-
-def make_upper_keys(chains):
-
-    new_chains = {}
-    for key, value in chains.items():
-        if key[0][0].isupper():
-            new_chains[key] = value
-    return new_chains
-
-
-#
-def make_text(new_chains, n_grams):
-
-    key = choice(new_chains.keys())
-    word_list = list(key)
-    word_value = choice(new_chains[key])
-
-    while word_value is not None:
-        key = (key[1::])
-        key = list(key)
-        key.append(word_value)
-        key = tuple(key)
-        word_list.append(word_value)
-        word_value = choice(new_chains[key])
-
-    return " ".join(word_list)
 
 
 input_path = "green-eggs.txt"
@@ -89,11 +57,11 @@ n_grams = 4
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
-chains = make_chains(input_text, n_grams)
+chains = make_chains(input_text)
 
-new_chains = make_upper_keys(chains)
+# new_chains = make_upper_keys(chains)
 # Get a Markov chain
 # Produce random text
-random_text = make_text(new_chains, n_grams)
+# random_text = make_text(chains, n_grams)
 # #
-print(random_text)
+# print(random_text)
