@@ -53,14 +53,25 @@ def make_chains(text_string, n_grams):
         else:
             chains[key].append(value)
         counter += 1
-    print(chains)
+    # print(chains)
     return chains
 
-def make_text(chains, n_grams):
 
-    key = choice(chains.keys())
+def make_upper_keys(chains):
+
+    new_chains = {}
+    for key, value in chains.items():
+        if key[0][0].isupper():
+            new_chains[key] = value
+    return new_chains
+
+
+#
+def make_text(new_chains, n_grams):
+
+    key = choice(new_chains.keys())
     word_list = list(key)
-    word_value = choice(chains[key])
+    word_value = choice(new_chains[key])
 
     while word_value is not None:
         key = (key[1::])
@@ -68,10 +79,9 @@ def make_text(chains, n_grams):
         key.append(word_value)
         key = tuple(key)
         word_list.append(word_value)
-        word_value = choice(chains[key])
+        word_value = choice(new_chains[key])
 
     return " ".join(word_list)
-
 
 
 input_path = "green-eggs.txt"
@@ -79,9 +89,11 @@ n_grams = 4
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
-# Get a Markov chain
 chains = make_chains(input_text, n_grams)
-# Produce random text
-random_text = make_text(chains, n_grams)
 
+new_chains = make_upper_keys(chains)
+# Get a Markov chain
+# Produce random text
+random_text = make_text(new_chains, n_grams)
+# #
 print(random_text)
