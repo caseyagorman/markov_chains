@@ -31,37 +31,57 @@ def make_chains(text_string):
         >>> chains[('there','juanita')]
         [None]
     """
-
     chains = {}
+    value = []
     counter = 0
-    # your code goes here
-    key =[]
-    text_list = re.findall(r"[\w']+|[.,!?;]", text_string)
-    for word in text_list:
-        key.append(word)
-        if word == "." or word == "!" or word == "?":
-            break
-    key = " ".join(key)
+    split_string = text_string.split()
+    split_string.append(None)
 
-    print(key)
+    while counter < (len(split_string) - 2):
+        key = (split_string[counter], split_string[counter+1])
+        value = split_string[counter + 2]
+        if key not in chains:
+            chains[key] = [value]
+        else:
+            chains[key].append(value)
+        counter += 3
+    print(chains)
+    return chains
+
+    # # your code goes here
+
+
+def make_text(chains):
+
+    key = choice(chains.keys())
+    word_list = list(key)
+    word_value = choice(chains[key])
+    punctuation = [".", "!", "?"]
+
+    while word_value is not None:
+        key = (key[1], word_value)
+        if word_value[-1] in punctuation:
+            break
+        word_list.append(word_value)
+        word_value = choice(chains[key])
+
+    return " ".join(word_list)
+
+
 
 
             # counter += 1
     # print(chains)
-    return chains
+
 
 
 
 input_path = "green-eggs.txt"
-n_grams = 4
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
 chains = make_chains(input_text)
 
-# new_chains = make_upper_keys(chains)
-# Get a Markov chain
-# Produce random text
-# random_text = make_text(chains, n_grams)
-# #
-# print(random_text)
+random_text = make_text(chains)
+#
+print(random_text)
