@@ -32,7 +32,6 @@ def make_chains(text_string):
         [None]
     """
     chains = {}
-    value = []
     counter = 0
     split_string = text_string.split()
     split_string.append(None)
@@ -42,28 +41,48 @@ def make_chains(text_string):
         value = split_string[counter + 2]
         if key not in chains:
             chains[key] = [value]
+
         else:
             chains[key].append(value)
-        counter += 3
+
+        counter += 1
+
     print(chains)
     return chains
 
     # # your code goes here
 
+def get_starting_key(chains):
+    print("Getting starting key")
+    for key in chains.keys():
+        key = choice(chains.keys())
+        if key[0][0].isupper():
+            starting_key = key
+        else:
+            continue
+    return starting_key
 
-def make_text(chains):
 
-    key = choice(chains.keys())
-    word_list = list(key)
+def make_text(chains, starting_key):
+    print("making text")
+    key = starting_key
     word_value = choice(chains[key])
     punctuation = [".", "!", "?"]
+    word_list = list(starting_key)
 
     while word_value is not None:
         key = (key[1], word_value)
-        if word_value[-1] in punctuation:
-            break
-        word_list.append(word_value)
-        word_value = choice(chains[key])
+
+        if key[0][0].isupper():
+            word_list.append(word_value)
+            if word_value[-1] in punctuation:
+                word_list.append(word_value)
+                break
+            else:
+                continue
+        else:
+            continue
+            word_value = choice(chains[key])
 
     return " ".join(word_list)
 
@@ -81,7 +100,7 @@ input_path = "green-eggs.txt"
 input_text = open_and_read_file(input_path)
 
 chains = make_chains(input_text)
-
-random_text = make_text(chains)
+starting_key = get_starting_key(chains)
+random_text = make_text(chains, starting_key)
 #
 print(random_text)

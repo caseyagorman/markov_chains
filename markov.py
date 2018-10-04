@@ -70,6 +70,7 @@ def make_text(chains, n_grams):
         word_list.append(word_value)
         word_value = choice(chains[key])
 
+
     return " ".join(word_list)
 
 
