@@ -1,8 +1,7 @@
 """Generate Markov text from text files."""
 
-from random import choice
 import random
-import re
+import sys
 
 def open_and_read_file(file_path):
     """Take file path as string; return text as string.
@@ -55,37 +54,39 @@ def make_chains(text_string):
 def get_starting_key(chains):
     print("Getting starting key")
     for key in chains.keys():
-        key = choice(chains.keys())
-        print("Key choice", key)
+        key = random.choice(list(chains))
+        print(key)
         if key[0][0].isupper():
             starting_key = key
-            print("Upper key", key)
             return starting_key
-        else:
-            continue
 
 
 
 
 def make_text(chains, starting_key):
-    print("making text")
-    key = starting_key
-    word_value = choice(chains[key])
-    punctuation = [".", "!", "?"]
-    word_list = list(starting_key)
-    # print("starting key", word_list, "value",word_value)
+    big_list = []
+    counter = 0
+    while counter < random.randint(1, 20):
+        print("making text")
+        key = starting_key
+        word_value = random.choice(chains[key])
+        punctuation = [".", "!", "?"]
+        word_list = list(starting_key)
+        # print("starting key", word_list, "value",word_value)
 
-    while word_value is not " ":
-            key = (key[1], word_value)
-            if word_value[0].islower():
+        while word_value is not " ":
+                key = (key[1], word_value)
+                # if word_value[0].islower():
                 word_list.append(word_value)
                 if word_value[-1] in punctuation:
+                    big_list.append(" ".join(word_list))
                     break
 
-            word_value = choice(chains[key])
+                word_value = random.choice(chains[key])
+        counter += 1
+    print(big_list)
 
-    return " ".join(word_list)
-
+    return " ".join(big_list)
 
 
 
