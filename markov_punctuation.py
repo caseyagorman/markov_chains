@@ -34,7 +34,7 @@ def make_chains(text_string):
     chains = {}
     counter = 0
     split_string = text_string.split()
-    split_string.append(None)
+    split_string.append(" ")
 
     while counter < (len(split_string) - 2):
         key = (split_string[counter], split_string[counter+1])
@@ -56,11 +56,15 @@ def get_starting_key(chains):
     print("Getting starting key")
     for key in chains.keys():
         key = choice(chains.keys())
+        print("Key choice", key)
         if key[0][0].isupper():
             starting_key = key
+            print("Upper key", key)
+            return starting_key
         else:
             continue
-    return starting_key
+
+
 
 
 def make_text(chains, starting_key):
@@ -69,19 +73,15 @@ def make_text(chains, starting_key):
     word_value = choice(chains[key])
     punctuation = [".", "!", "?"]
     word_list = list(starting_key)
+    # print("starting key", word_list, "value",word_value)
 
-    while word_value is not None:
-        key = (key[1], word_value)
-
-        if key[0][0].isupper():
-            word_list.append(word_value)
-            if word_value[-1] in punctuation:
+    while word_value is not " ":
+            key = (key[1], word_value)
+            if word_value[0].islower():
                 word_list.append(word_value)
-                break
-            else:
-                continue
-        else:
-            continue
+                if word_value[-1] in punctuation:
+                    break
+
             word_value = choice(chains[key])
 
     return " ".join(word_list)
