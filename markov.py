@@ -1,7 +1,7 @@
 """Generate Markov text from text files."""
 
 from random import choice
-import random
+import sys
 
 def open_and_read_file(file_path):
     """Take file path as string; return text as string.
@@ -36,33 +36,37 @@ def make_chains(text_string, n_grams):
     # your code goes here
 
     split_string = text_string.split()
-    split_string.append(None)
+    split_string.append(" ")
     counter = 0
 
     while counter < (len(split_string) - n_grams):
+        print(counter)
         key = []
         value = []
 
         for n in range(n_grams):
             new_count = (counter) + n
             (key.append(split_string[new_count]))
+
         key = tuple(key)
         value = split_string[new_count + 1]
+
         if key not in chains:
             chains[key] = [value]
         else:
             chains[key].append(value)
+
         counter += 1
     print(chains)
     return chains
 
 def make_text(chains, n_grams):
 
-    key = choice(chains.keys())
+    key = choice(list(chains))
     word_list = list(key)
     word_value = choice(chains[key])
 
-    while word_value is not None:
+    while word_value is not " ":
         key = (key[1::])
         key = list(key)
         key.append(word_value)
@@ -75,8 +79,9 @@ def make_text(chains, n_grams):
 
 
 
-input_path = "green-eggs.txt"
-n_grams = 4
+
+input_path = sys.argv[1]
+n_grams = int(sys.argv[2])
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
